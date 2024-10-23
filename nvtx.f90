@@ -3,14 +3,17 @@ module nvtx
 use iso_c_binding
 implicit none
 
-integer(kind=C_INT32_T), private :: col(7)  = [ &
+integer(kind=C_INT32_T), private :: col(10)  = [ &
  int(Z'0000ff00',kind=C_INT32_T), &
  int(Z'000000ff',kind=C_INT32_T), &
  int(Z'00ffff00',kind=C_INT32_T), &
  int(Z'00ff00ff',kind=C_INT32_T), &
  int(Z'0000ffff',kind=C_INT32_T), &
  int(Z'00ff0000',kind=C_INT32_T), &
- int(Z'00ffffff',kind=C_INT32_T)]
+ int(Z'00666666',kind=C_INT32_T), &
+ int(Z'00ff6600',kind=C_INT32_T), &
+ int(Z'00ff0066',kind=C_INT32_T), &
+ int(Z'0000ff66',kind=C_INT32_T)]
 character,private,target :: tempName(256)
 
 type, bind(C):: nvtxEventAttributes
@@ -66,7 +69,7 @@ subroutine nvtxStartRange(name,id)
   if ( .not. present(id)) then
     call nvtxRangePush(tempName)
   else
-    event%color=col(mod(id,7)+1)
+    event%color=col(mod(id,10)+1)
     event%message=c_loc(tempName)
     call nvtxRangePushEx(event)
   end if
